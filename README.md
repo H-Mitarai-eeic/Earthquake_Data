@@ -1,0 +1,2 @@
+# Earthquake_Data
+Earthquake_AI用のデータリポジトリ
