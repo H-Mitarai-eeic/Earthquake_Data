@@ -1,9 +1,11 @@
 # Earthquake_Data
-Earthquake_AI用のデータリポジトリ
+Earthquake_AI用のデータリポジトリ by Haruki Mitarai(U-TOKYO)
 # データ
 ## データソース
 気象庁 > 地震月報（カタログ編）> 震度データ<br>
 https://www.data.jma.go.jp/svd/eqev/data/bulletin/shindo.html
+## 除外しているデータ
+マグニチュードあるいは深さのいずれかが欠損したデータはすべて除外している。
 ## データ形式
 ### data_shaped/kansoku[year].csv
 ```
@@ -14,6 +16,7 @@ https://www.data.jma.go.jp/svd/eqev/data/bulletin/shindo.html
 地震ID(int), 観測点数(int), 緯度(float), 経度(float), 深さ(float), 気象庁マグニチュード(float)
 ```
 ### data_reshaped/[EarthQuake ID].csv
+data_reshapedディレクトリは18GBほどあるため、取り扱い注意。
 ```
 震源のx座標(int, 0〜255), 震源のy座標(int, 0〜255), 震源の深さ(float, km), マグニチュード\n
 正解ラベル(256×256の二次元int配列，値はその地点の震度)
