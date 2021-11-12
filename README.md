@@ -23,4 +23,4 @@ https://www.data.jma.go.jp/svd/eqev/data/bulletin/shindo.html
 経度122~154
 
 ## 顕著な地震データ
-    1. 東北地方太平洋沖地震 : EarthQuake ID = 45235
+    1. 東北地方太平洋沖地震 : EarthQuake ID = 40278
