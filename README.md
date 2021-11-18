@@ -2,20 +2,20 @@
 Earthquake_AI用のデータリポジトリ by Haruki Mitarai(U-TOKYO)<br>
 課題提出用リポジトリ : https://github.com/H-Mitarai-eeic/Earthquaker <br>
 開発用リポジトリ：https://github.com/H-Mitarai-eeic/Earthquake_AI
-# ディレクトリに関して
-data/ : 気象庁から取得したデータ<br>
-data_shaped : 気象庁から取得したデータの内、必要部分を取り出して .csvにしたもの<br>
-data_reshaped_honshu6464/ : 学習用データ（本州周辺のデータ, 64 x 64）<br>
-data_reshaped_honshu6464/ : 学習用データ（本州周辺のデータでマグニチュード5以上のもの 64 x 64）<br>
-data_reshaped_japan256256/ : 学習用データ（日本周辺すべてのデータ 256 x 256）<br>
+# データディレクトリの中身
+1. data/ : 気象庁から取得したデータ<br>
+2. data_shaped : 気象庁から取得したデータの内、必要部分を取り出して .csvにしたもの<br>
+3. data_reshaped_honshu6464/ : 学習用データ（本州周辺のデータ, 64 x 64）<br>
+4. data_reshaped_honshu6464/ : 学習用データ（本州周辺のデータでマグニチュード5以上のもの 64 x 64）<br>
+5. data_reshaped_japan256256/ : 学習用データ（日本周辺すべてのデータ 256 x 256）<br>
 # ソースコード
 ## mkdata.c
-気象庁から取得したデータの内、必要部分を取り出して .csvにするプログラム。data/ ディレクトリ内のデータを data_shaped/ に出力
+気象庁から取得したデータの内、必要部分を取り出して .csvにするプログラム。`data/` ディレクトリ内のデータを `data_shaped/` に出力。成形したいデータの年はプログラム内`define`文で設定
 ## data_reshape.c
-mkdata.c で .csvにしたデータをさらに学習用データに成形。
-data_shaped/ ディレクトリ内のデータを data_reshaped_*/ に出力
+`mkdata.c` で .csvにしたデータをさらに学習用データに再成形。再成形したいデータの年、緯度経度の範囲、メッシュ数はプログラム内`define`文で設定
+`data_shaped/` ディレクトリ内のデータを `data_reshaped_*/` に出力
 ## ObsevationPoints.c
-各メッシュ内の観測地点数をcsvで出力。
+`mkdata.c`で出力したデータを使用して、各メッシュ内の観測地点数をcsvで出力。出力したデータは学習時のマスクとして使用可能。緯度経度の範囲、メッシュ数はプログラム内`define`文で設定
 # データ
 ## データソース
 気象庁 > 地震月報（カタログ編）> 震度データ<br>
