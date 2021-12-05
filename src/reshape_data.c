@@ -16,7 +16,9 @@
 //honshu S30.0 N46.0 E146.0 W128.0
 
 #define MAGNITUDE_THRESHOLD 5.0     //成形するデータの最小マグニチュード
-#define OUT_FILE_PATH "data_reshaped_honshu6464_mag50/" //.csv   入力震源データのpath
+#define OUT_FILE_PATH "data_reshaped_honshu6464_mag50_InstrumentalIntensity/" //.csv   出力データのpath
+#define INTENSITY_MODE 1
+//#define INTENSITY_MODE 0 for "震度階級" 1 for "計測震度" 
 
 typedef struct{
     int EarthQuake_ID;
@@ -42,6 +44,7 @@ int latitude2Ycoor(double latitude);
 int longitude2Xcoor(double longitude);
 double degmin2_100(double tude);
 int int_max(int a, int b);
+double double_max(double a, double b);
 
 int main(void){
     Epicenter epic;
@@ -79,7 +82,7 @@ int main(void){
             strcat(filename_out, ".csv");
             //printf("output:%s\n", filename_out);
 
-            int mesh[MESH_SIZE][MESH_SIZE] = {0};
+            double mesh[MESH_SIZE][MESH_SIZE] = {0};
             int epic_x, epic_y;
             epic_x = longitude2Xcoor(epic.longitude);
             epic_y = latitude2Ycoor(epic.latitude);
@@ -89,7 +92,11 @@ int main(void){
                     int y = latitude2Ycoor(ob_data.latitude);
                     int x = longitude2Xcoor(ob_data.longitude);
                     if(0 <= x && x < MESH_SIZE && 0 <= y && y < MESH_SIZE){
-                        mesh[x][y] = int_max(ob_data.IntensityClass, mesh[x][y]);
+                        if (INTENSITY_MODE == 0){
+                            mesh[x][y] = int_max(ob_data.IntensityClass, mesh[x][y]);
+                        }else if (INTENSITY_MODE == 1){
+                            mesh[x][y] = double_max(ob_data.SeismicIntensity, mesh[x][y]);     //計測震度
+                        }
                     }
                 }
             }
@@ -103,10 +110,18 @@ int main(void){
                 for (int y = 0; y < MESH_SIZE; y++){
                     for (int x = 0; x < MESH_SIZE; x++){
                         if (x  < MESH_SIZE - 1){
-                            fprintf(fp_out, "%d,", mesh[x][y]);
+                            if (INTENSITY_MODE == 0){
+                                fprintf(fp_out, "%d,", (int)mesh[x][y]);
+                            }else if (INTENSITY_MODE == 1){
+                                fprintf(fp_out, "%.1f,", mesh[x][y]);
+                            }
                         }
                         else{
-                            fprintf(fp_out, "%d\n", mesh[x][y]);
+                            if (INTENSITY_MODE == 0){
+                                fprintf(fp_out, "%d\n", (int)mesh[x][y]);
+                            }else if (INTENSITY_MODE == 1){
+                                fprintf(fp_out, "%.1f\n", mesh[x][y]);
+                            }
                         }
                     }
                 }
@@ -163,6 +178,13 @@ double degmin2_100(double tude){
 }
 
 int int_max(int a, int b){
+    if (a > b){
+        return a;
+    }else{
+        return b;
+    }
+}
+double double_max(double a, double b){
     if (a > b){
         return a;
     }else{
